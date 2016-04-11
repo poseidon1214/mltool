@@ -60,7 +60,7 @@ class MailSender:
     def __init__(self, sendmail='/usr/sbin/sendmail'):
         self.__cmd = sendmail
 
-    def send(self, receiver, title, cont, sender='pydev.MailSender@nickgu.github.com'):
+    def send(self, receiver, title, cont, sender='171262426@qq.com'):
         #p = os.popen('cat', 'w')
         p = os.popen(self.__cmd + ' %s'%receiver, 'w')
         print >> p, 'From: pydev.MailSender<%s>' % sender
@@ -92,7 +92,7 @@ class RandomItemGenerator:
         return self.__ol
 
 # from zhangduo.
-class TopkHeap(object):
+class TopkHeap(object):   #小顶堆找最大topk
     def __init__(self, k, key_func):
         self.k = k
         self.key_func = key_func
@@ -118,7 +118,7 @@ class TopkHeap(object):
             elem_key = self.key_func(elem)
             if elem_key > small_key:
                 count = next(self.counter)
-                heapq.heapreplace(self.data, [elem_key, count, elem])
+                heapq.heapreplace(self.data, [elem_key, count, elem]) #先进行删除，后压入堆
                 return True
         return False
 

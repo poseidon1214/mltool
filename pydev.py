@@ -103,7 +103,7 @@ class TopkHeap(object):   #小顶堆找最大topk
         return [x[2] for x in self.data]
     
     def sorted_data(self):
-        return [x[2] for x in reversed([heapq.heappop(self.data) for x in xrange(len(self.data))])]
+        return [x[2] for x in reversed([heapq.heappop(self.data) for x in xrange(len(self.data))])] #从self.data中删除最小的，并返回该值
 
     def extend_heap(self, size):
         self.k += size

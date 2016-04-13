@@ -175,7 +175,7 @@ class VarConfig:
             for opt in raw_conf.options(section):
                 value = raw_conf.get(section, opt, raw=True)
                 self.__config[section][opt] = value
-            self.__makeup_config(section, dependency.get(section, None))
+            self.__makeup_config(section, dependency.get(section, None)) #用父模板section填充
 
         # step 3.
         #   substitute params.
@@ -356,7 +356,7 @@ class Arg(object):
 def foreach_line(fd=sys.stdin, percentage=False):
     if percentage:
         cur_pos = fd.tell()
-        fd.seek(0, 2)
+        fd.seek(0, 2) #文件末尾
         file_size = fd.tell()
         fd.seek(cur_pos)
         old_perc = 0
@@ -397,7 +397,7 @@ def foreach_row(fd=sys.stdin, min_fields_num=-1, seperator='\t', percentage=Fals
             continue
         yield arr
 
-def dict_from_str(s, l1_sep=';', l2_sep='='):
+def dict_from_str(s, l1_sep=';', l2_sep='='): #k1=v1;k2=v2;
     dct = {}
     if not isinstance(s, str):
         return {}
@@ -451,12 +451,12 @@ def sock_recv(sock):
 
 def sock_send(sock, data):
     data_len = '%8d' % len(data)
-    sock.sendall(data_len)
+    sock.sendall(data_len) #完整发送TCP数据
     sock.sendall(data)
 
 def simple_query(query, ip='127.0.0.1', port=12345):
     sys.stderr.write('SEEK_TO: %s:%s\n' % (ip, port))
-    clisock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    clisock = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #AF_INET是ipv4，SOCK_STREAM是流套接字
     clisock.connect((ip, port))
 
     sock_send(clisock, query)
@@ -519,9 +519,9 @@ class BasicService:
             self.__handler_init()
 
         self.__sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.__sock.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1) 
+        self.__sock.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1) #这里value设置为1，操作系统会在服务器socket被关闭或服务器进程终止后马上释放该服务器的端口，否则操作系统会保留几分钟该端口。
         self.__sock.bind( (ip, port) )
-        self.__sock.listen(32)
+        self.__sock.listen(32) #服务器实际处理连接的时候，允许有多少个未决（等待）的连接在队列中等待
         sys.stderr.write('listen : %s:%d\n' % (ip, port))
 
         last_time = time.time()
@@ -542,7 +542,7 @@ class BasicService:
                 #   because i need to run a timer process.
                 self.__sock.settimeout(1);
                 try:
-                    clisock, (remote_host, remote_port) = self.__sock.accept()
+                    clisock, (remote_host, remote_port) = self.__sock.accept() #connection, address = socket.accept()
                 except socket.timeout, msg:
                     continue
 

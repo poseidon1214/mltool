@@ -686,7 +686,7 @@ class MapperCounter:
 
     def dump(self, stream, sort=False):
         if sort:
-            for key, value in sorted(self.__dct.iteritems(), key=lambda x:-x[1]):
+            for key, value in sorted(self.__dct.iteritems(), key=lambda x:-x[1]): #big->small
                 print '%s\t%s' % (key, value)
         else:
             for key, value in self.__dct.iteritems():
